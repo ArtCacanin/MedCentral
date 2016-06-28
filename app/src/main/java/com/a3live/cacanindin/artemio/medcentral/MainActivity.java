@@ -1,5 +1,8 @@
 package com.a3live.cacanindin.artemio.medcentral;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,30 +16,46 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final int MEDS = 0;
+    private static final int SEFFECTS = 1;
+    private static final int INTERS = 2;
+
+    private Fragment[] fragments = new Fragment[3];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.meds_main);
+        setContentView(R.layout.activity_main);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //        .setAction("Action", null).show();
-            }
-        });
+        FragmentTransaction tempTrans = getFragmentManager().beginTransaction();
 
-        createNavigation();
-    }
+        fragments[MEDS] = getFragmentManager().findFragmentById(R.id.meds);
+        fragments[SEFFECTS] = getFragmentManager().findFragmentById(R.id.seffects);
+        fragments[INTERS] = getFragmentManager().findFragmentById(R.id.inters);
 
-    public void createNavigation() {
+        for (int i = 0; i < fragments.length; i++) {
+            tempTrans.hide(fragments[i]);
+        }
+
+        tempTrans.commit();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                //        .setAction("Action", null).show();
+//
+//           }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -47,6 +66,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -86,32 +106,44 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_meds) {
-            System.out.println("Medications Check");
-            Intent nextScreen = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(nextScreen);
-            //setContentView(R.layout.meds_main);
-            //createNavigation();
+            transFragment(fragments[MEDS]);
         }
         else if (id == R.id.nav_seffects) {
-            System.out.println("Side Effects Check");
-            Intent nextScreen = new Intent(getApplicationContext(), SEffectsActivity.class);
-            startActivity(nextScreen);
-            //setContentView(R.layout.seffects_main);
-            //createNavigation();
+            transFragment(fragments[SEFFECTS]);
         }
         else if (id == R.id.nav_inters) {
-            System.out.println("Interactions Check");
-            Intent nextScreen = new Intent(getApplicationContext(), IntersActivity.class);
-            startActivity(nextScreen);
-            //setContentView(R.layout.inters_main);
-            //createNavigation();
+            transFragment(fragments[INTERS]);
         }
         else if (id == R.id.nav_share) {
-            System.out.println("Share Check");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void transFragment(Fragment tempFrag) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+        Fragment newInstance = recreateFragment(tempFrag);
+        ft.replace(R.id.frag_layout, newInstance);
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+
+    private Fragment recreateFragment(Fragment tempFrag)
+    {
+        try {
+            Fragment.SavedState savedState = getFragmentManager().saveFragmentInstanceState(tempFrag);
+
+            Fragment newInstance = tempFrag.getClass().newInstance();
+            newInstance.setInitialSavedState(savedState);
+
+            return newInstance;
+        }
+        catch (Exception e) // InstantiationException, IllegalAccessException
+        {
+            throw new RuntimeException("Cannot reinstantiate fragment " + tempFrag.getClass().getName(), e);
+        }
     }
 }

@@ -23,3 +23,29 @@
         app:menu="@menu/activity_main_drawer" />
 
 </android.support.v4.widget.DrawerLayout>
+
+<!--
+    <fragment
+        android:name="com.a3live.cacanindin.artemio.medcentral.MedsFragment"
+        android:id="@+id/meds"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        tools:layout="@layout/meds_layout" />
+
+    <fragment
+        android:name="com.a3live.cacanindin.artemio.medcentral.IntersFragment"
+        android:id="@+id/inters"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        tools:layout="@layout/inters_layout" />
+
+    <fragment
+        android:name="com.a3live.cacanindin.artemio.medcentral.SEffectsFragment"
+        android:id="@+id/seffects"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        tools:layout="@layout/seffects_layout" />
+-->

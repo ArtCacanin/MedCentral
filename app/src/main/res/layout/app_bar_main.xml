@@ -21,15 +21,33 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include
-        layout="@layout/meds_layout" />
+    <RelativeLayout
+        android:id="@+id/frag_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize" >
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+    </RelativeLayout>
+
+    <fragment
+        android:name="com.a3live.cacanindin.artemio.medcentral.MedsFragment"
+        android:id="@+id/meds"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        tools:layout="@layout/meds_layout" />
+
+    <fragment
+        android:name="com.a3live.cacanindin.artemio.medcentral.IntersFragment"
+        android:id="@+id/inters"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        tools:layout="@layout/inters_layout" />
+
+    <fragment
+        android:name="com.a3live.cacanindin.artemio.medcentral.SEffectsFragment"
+        android:id="@+id/seffects"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        tools:layout="@layout/seffects_layout" />
 
 </android.support.design.widget.CoordinatorLayout>
